@@ -2,6 +2,7 @@
   "name": "ambitionacademy",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://atul1507.github.io/ambitionacademy/",
   "type": "module",
   "scripts": {
     "dev": "vite",

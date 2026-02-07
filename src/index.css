@@ -134,6 +134,7 @@ body {
 .gradient-border {
   position: relative;
   border-radius: 14px;
+  z-index: 0;
 }
 
 .gradient-border::before {
@@ -142,6 +143,7 @@ body {
   inset: 0;
   padding: 1.5px;
   border-radius: inherit;
+  z-index: -1;   /* ⭐ ensures border stays behind content */
 
   background: linear-gradient(
     120deg,
@@ -153,20 +155,17 @@ body {
   background-size: 300% 300%;
   animation: borderMove 6s linear infinite;
 
-  /* Standard mask */
   mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   mask-composite: exclude;
 
-  /* Webkit */
   -webkit-mask:
     linear-gradient(#000 0 0) content-box,
     linear-gradient(#000 0 0);
   -webkit-mask-composite: xor;
-
-  pointer-events: none;
 }
+
 
 @keyframes borderMove {
   0% { background-position: 0% 50%; }

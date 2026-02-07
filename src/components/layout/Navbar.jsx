@@ -1,8 +1,11 @@
 import { useEffect, useState, useRef } from "react";
 import logo from "../../assets/logo.png";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+
+
 
 export default function Navbar() {
+  const navigate = useNavigate();
   const [menuOpen, setMenuOpen] = useState(false);
   const [openSubMenu, setOpenSubMenu] = useState(null);
   const [scrolled, setScrolled] = useState(false);
@@ -115,9 +118,8 @@ export default function Navbar() {
     <>
       {/* ================= NAVBAR ================= */}
       <nav
-        className={`w-full fixed top-0 left-0 right-0 z-9999 backdrop-blur-md transition-all duration-300 ${
-          scrolled ? "shadow-md" : ""
-        }`}
+        className={`w-full fixed top-0 left-0 right-0 z-9999 backdrop-blur-md transition-all duration-300 ${scrolled ? "shadow-md" : ""
+          }`}
         style={{ backgroundColor: "#F3E7B3CC" }}
       >
         <div className="max-w-7xl mx-auto px-4">
@@ -163,11 +165,10 @@ export default function Navbar() {
                       <span
                         ref={(el) => (navRefs.current[item.name] = el)}
                         onMouseEnter={() => moveIndicator(item.name)}
-                        className={`cursor-pointer transition duration-300 ${
-                          isParentActive
+                        className={`cursor-pointer transition duration-300 ${isParentActive
                             ? "font-bold text-black"
                             : "text-gray-800"
-                        }`}
+                          }`}
                       >
                         {item.name}
                       </span>
@@ -177,10 +178,9 @@ export default function Navbar() {
                         ref={(el) => (navRefs.current[item.name] = el)}
                         onMouseEnter={() => moveIndicator(item.name)}
                         className={({ isActive }) =>
-                          `transition duration-300 ${
-                            isActive
-                              ? "font-bold text-black"
-                              : "text-gray-800"
+                          `transition duration-300 ${isActive
+                            ? "font-bold text-black"
+                            : "text-gray-800"
                           }`
                         }
                       >
@@ -223,17 +223,15 @@ export default function Navbar() {
 
       {/* ================= OVERLAY ================= */}
       <div
-        className={`fixed inset-0 z-40 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ${
-          menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
-        }`}
+        className={`fixed inset-0 z-40 bg-black/30 backdrop-blur-sm transition-opacity duration-300 ${menuOpen ? "opacity-100 visible" : "opacity-0 invisible"
+          }`}
         onClick={() => setMenuOpen(false)}
       />
 
       {/* ================= DRAWER ================= */}
       <div
-        className={`fixed top-0 right-0 h-full w-72 bg-white z-50 shadow-xl transform transition-all duration-300 ease-out ${
-          menuOpen ? "translate-x-0" : "translate-x-full"
-        }`}
+        className={`fixed top-0 right-0 h-full w-72 bg-white z-50 shadow-xl transform transition-all duration-300 ease-out ${menuOpen ? "translate-x-0" : "translate-x-full"
+          }`}
       >
         <div className="p-5 border-b flex justify-between">
           <h2 className="font-bold">Menu</h2>
@@ -247,13 +245,20 @@ export default function Navbar() {
                 className="flex justify-between items-center py-2"
                 onClick={() => item.sub && toggleSubMenu(item.name)}
               >
-                {item.sub ? (
-                  <span>{item.name}</span>
-                ) : (
-                  <NavLink to={item.path} onClick={() => setMenuOpen(false)}>
-                    {item.name}
-                  </NavLink>
-                )}
+                <div
+                  className="w-full py-2 cursor-pointer"
+                  onClick={() => {
+                    if (item.sub) {
+                      toggleSubMenu(item.name);
+                    } else {
+                      navigate(item.path);
+                      setMenuOpen(false);
+                    }
+                  }}
+                >
+                  {item.name}
+                </div>
+
                 {item.sub && (
                   <span className="text-lg font-bold">
                     {openSubMenu === item.name ? "−" : "+"}
@@ -265,12 +270,15 @@ export default function Navbar() {
                 <ul className="pl-5 space-y-1 text-sm text-gray-600">
                   {item.sub.map((sub) => (
                     <li key={sub.name}>
-                      <NavLink
-                        to={sub.path}
-                        onClick={() => setMenuOpen(false)}
+                      <div
+                        className="w-full py-1 cursor-pointer"
+                        onClick={() => {
+                          navigate(sub.path);
+                          setMenuOpen(false);
+                        }}
                       >
                         {sub.name}
-                      </NavLink>
+                      </div>
                     </li>
                   ))}
                 </ul>
